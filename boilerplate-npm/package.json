@@ -1,0 +1,24 @@
+{
+	"author": "samoyla",
+	"description": "A simple and easy to use npm package to create a simple website",
+	"name": "fcc-learn-npm-package-json",
+	"keywords": [
+		"freecodecamp",
+		"certification",
+		"project"
+	],
+	"license": "MIT",
+	"version": "1.0.0",
+	"dependencies": {
+		"package-name":"version",
+		"express": "^4.18.2"
+	},
+	"main": "server.js",
+	"scripts": {
+		"start": "node server.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/freeCodeCamp/boilerplate-npm.git"
+	}
+}
