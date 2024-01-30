@@ -1,10 +1,17 @@
 require('dotenv').config();
 
+const bodyParser = require('body-parser');
 let express = require('express');
 let app = express();
 
 
 console.log("Hello World");
+
+// Use body-parser middleware to parse incoming request bodies
+// Use bodyParser middleware to handle URL-encoded data
+app.use(bodyParser.urlencoded({extended: false}));
+// Use bodyParser middleware to handle JSON data
+app.use(bodyParser.json());
 
 // Middleware function to add current time to req.time
 const addCurrentTime = (req, res, next) => {
@@ -52,6 +59,13 @@ app.get("/:word/echo", (req, res) => {
     });
 });
 
+app.post("/name",(req, res) => {
+    let {first ,last} = req.body;
+    res.json({
+        name:`${first} ${last}`
+    });
+});
+
 app.get("/name", (req, res)=>{
     let first = req.query.first;
     let second = req.query.last;
@@ -61,32 +75,20 @@ app.get("/name", (req, res)=>{
     });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// app.route("/name")
+// .get((req, res) => {
+//     let first = req.query.first;
+//     let second = req.query.last;
+//     // let {first: first, last: second} = req.query;
+//     res.json({
+//         name:`${first} ${second}`
+//     });
+// })
+// .post((req, res) => {
+//     let {first, last} = req.query;
+//     res.json({
+//         name:`${first} ${last}`
+//     });
+// });
 
 module.exports = app;
