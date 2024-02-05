@@ -42,43 +42,92 @@ const createManyPeople = (arrayOfPeople, done) => {
 };
 
 const findPeopleByName = (personName, done) => {
-  done(null /*, data*/);
+  Person.find({name: personName}, function(err,data) {
+    if(err) return done(err);
+    done(null, data);
+  });
 };
 
 const findOneByFood = (food, done) => {
-  done(null /*, data*/);
+  Person.findOne({favoriteFoods: food}, function(err, data){
+    if(err) return done(err);
+    done(null, data);
+  });
 };
 
 const findPersonById = (personId, done) => {
-  done(null /*, data*/);
+  Person.findById(personId, (err, data) => {
+    if(err) return done(err);
+    done(null, data);
+  });
 };
 
 const findEditThenSave = (personId, done) => {
   const foodToAdd = "hamburger";
+  Person.findById(personId, (err, person) => {
+    if(err) return done(err);
 
-  done(null /*, data*/);
+    person.favoriteFoods.push(foodToAdd);
+
+    person.save((err, data) => {
+      if(err) return done(err);
+      done(null, person);
+    });
+  });
 };
 
 const findAndUpdate = (personName, done) => {
   const ageToSet = 20;
-
-  done(null /*, data*/);
+  Person.findOneAndUpdate(
+    {name: personName},
+    {age: ageToSet},
+    {new: true},
+    (err, data) => {
+    if(err) return done(err);
+      done(null, data);
+    });
 };
 
 const removeById = (personId, done) => {
-  done(null /*, data*/);
+  Person.findByIdAndDelete(personId, (err, data) => {
+    if(err) return done(err);
+    done(null, data);
+  });
 };
 
 const removeManyPeople = (done) => {
   const nameToRemove = "Mary";
-
-  done(null /*, data*/);
+  Person.remove({name: nameToRemove}, (err, data) => {
+    if(err) return done(err);
+    done(null, data);
+  });
 };
 
 const queryChain = (done) => {
   const foodToSearch = "burrito";
 
-  done(null /*, data*/);
+  // Person.find({favoriteFoods: foodToSearch})
+  // .sort({name : 1})
+  // .limit(2)
+  // .select({age : false})
+  // .exec((err, data) => {
+  //   if(err) return done(err);
+  //   done(null, [data]);
+  // });
+
+  const query = Person.find({ favoriteFoods: foodToSearch });
+
+  // Utilisez les helpers de requête pour affiner la recherche
+  query
+    .sort({ name: 1 }) // Triez par nom dans l'ordre croissant
+    .limit(2) // Limitez les résultats à 2 documents
+    .select({ age: 0 }) // Masquez la propriété age
+
+  // Exécutez la requête avec le callback
+  query.exec((err, data) => {
+    if (err) return done(err);
+    done(null, data);
+  });
 };
 
 /** **Well Done !!**
